@@ -1,18 +1,58 @@
 import CartIcon from '../../assets/image/Cart.svg'
 import SearchIcon from '../../assets/image/Search.svg'
 import style from './styles/TopNav.module.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTheme, useMediaQuery, Grid, Typography } from '@mui/material';
 import CartMd from '../../assets/image/CartMd.svg';
 import SearchMd from '../../assets/image/SearchMd.svg';
+import { getAllCartItemsUrl } from '../../api/Api'
+import axios from 'axios';
+
+const fetchCartItems = async (setItems) => {
+  try {
+    const response = await axios.get(getAllCartItemsUrl);
+    if (response.status === 200) {
+      setItems(response.data.response.data);
+    } else {
+      throw new Error(response.message);
+    }
+  } catch (error) {
+    console.error('Failed to fetch cart items:', error);
+  }
+};
+
+const handleQuantity = (items, setQuantity) => {
+  let totalQuantity = 0;
+  items.forEach((item) => {
+    totalQuantity += item.quantity;
+    console.log('Items quantity --> ', item.quantity, " total quantity --> ", totalQuantity)
+  })
+  console.log("\n total quantity --> ", totalQuantity)
+  setQuantity(totalQuantity);
+};
 
 const TopNav = () => {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
   const [searchProduct, setsearchProduct] = useState();
+  const[items, setItems] = useState([])
+  const [quantity, setQuantity] = useState(0);
+
   const handleChange = (e) => {
     setsearchProduct(e.target.value);
   }
+
+  useEffect(() => {
+    fetchCartItems(setItems);
+  }, []);
+
+  useEffect(() => {
+    handleQuantity(items, setQuantity);
+  }, [items]);
+
+  console.log('Items --> ', items);
+  console.log('Quantity --> ', quantity);
+
   return (
     <>
       {!isMobile && (
@@ -20,7 +60,7 @@ const TopNav = () => {
           <Grid item lg={3} xl={3} sx={{ fontSize: '25px', fontWeight: '700', color: 'black', textAlign: 'center' }}>Amy Doll</Grid>
           <Grid item lg={6} xl={6} sx={{ backgroundColor: 'white', borderRadius: '8px' }}>
             <Grid container>
-              <Grid item lg={10} xl={10}>
+              <Grid item lg={10} xl={10} sx={{ display: 'flex', alignItems: 'center' }}>
                 <input className={style.FI} style={{ color: '#000', backgroundColor: 'white', padding: '5px 10px', border: 'none', borderBottomLeftRadius: '8px', borderTopLeftRadius: '8px', fontSize: '18px', textAlign: 'center' }} type="text" placeholder="Search for products..." value={searchProduct} onChange={handleChange} />
               </Grid>
               <Grid item lg={2} xl={2} sx={{ color: 'white', backgroundColor: '#cd6444', borderTopRightRadius: '8px', borderBottomRightRadius: '8px', justifyContent: 'center', alignItems: 'center', display: 'flex' }}>
@@ -35,6 +75,7 @@ const TopNav = () => {
               </Grid>
               <Grid item lg={1} xl={1} sx={{ textAlignLast: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <img src={CartIcon} alt='CartIcon' />
+                <span style={{ color: 'black', fontSize: '20px', fontWeight: '700', backgroundColor: 'transparent', marginTop: '-15px', borderRadius: '50%' }}>{quantity}</span>
               </Grid>
             </Grid>
           </Grid>
@@ -50,6 +91,7 @@ const TopNav = () => {
               </Grid>
               <Grid item sm={1} md={1} xs={1} sx={{ textAlignLast: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <img src={CartMd} alt='CartIcon' />
+                <span style={{ color: '#cd6444', fontSize: '20px', fontWeight: '700', backgroundColor: 'transparent', marginTop: '-15px', borderRadius: '50%' }}>{quantity}</span>
               </Grid>
             </Grid>
           </Grid>
