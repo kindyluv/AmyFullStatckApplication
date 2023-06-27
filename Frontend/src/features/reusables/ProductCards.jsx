@@ -1,14 +1,17 @@
 /* eslint-disable react/prop-types */
 import {useTheme, useMediaQuery, Grid, Button, Typography} from '@mui/material';
 import PropTypes from 'prop-types';
-import { addToCartUrl } from '../../api/Api';
+import { addToCartUrl, getAllCartItemsUrl } from '../../api/Api';
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
+import { cartItems } from '../header/TopNav'
+import { useState } from 'react';
 
 const ProductCards = props => {
   const navigate = useNavigate()
   const theme = useTheme ();
   const isMobile = useMediaQuery (theme.breakpoints.down ('md'));
+  const[items, setItems] = useState([])
 
   const sendItemToCart = async () => {
     if (!props.productId) {
@@ -19,6 +22,13 @@ const ProductCards = props => {
     try {
       const response = await axios.post(addToCartUrl, { productId: props.productId });
       console.log('Item added to cart:', response.data);
+      const cartItemsResponse = await axios.get(getAllCartItemsUrl);
+
+      if (cartItemsResponse.status === 200) {
+        setItems(cartItemsResponse.data.response.data);
+      } else {
+        throw new Error(cartItemsResponse.message);
+      }
     } catch (error) {
       console.error('Failed to add item to cart:', error);
     }
@@ -26,6 +36,7 @@ const ProductCards = props => {
 
   const handleAddToCart = () => {
     sendItemToCart();
+    cartItems(items)
   };
   
   const handleBuyNow = () => {
@@ -33,7 +44,7 @@ const ProductCards = props => {
   };
 
   return (
-    <Grid container sx={{ boxShadow: '0 0 5px rgba(161, 151, 151, 0.3), 0 5px 5px rgba(161, 151, 151, 0.3), 5px 0 5px rgba(161, 151, 151, 0.3), 5px 5px 5px rgba(161, 151, 151, 0.3)', minHeight: { lg: '220px', md: '300px', sm: '300px', xs: '300px', xl: '300px', },  minWidth: { lg: '220px', md: '370px', sm: '300px', xs: '300px', xl: '300px', }}}>
+    <Grid container sx={{ boxShadow: '0 0 5px rgba(161, 151, 151, 0.3), 0 5px 5px rgba(161, 151, 151, 0.3), 5px 0 5px rgba(161, 151, 151, 0.3), 5px 5px 5px rgba(161, 151, 151, 0.3)', minHeight: { lg: '220px', md: '250px', sm: '300px', xs: '300px', xl: '300px', },  minWidth: { lg: '220px', md: '300px', sm: '250px', xs: '300px', xl: '300px', }}}>
       <Grid
         item
         lg={5}
@@ -60,9 +71,9 @@ const ProductCards = props => {
         }}
       >
         <Typography
-          mb={2}
+          mb={isMobile ? 1 : 2}
           sx={{
-            color: 'brown',
+            color: '#a1385c',
             fontWeight: '700',
             fontSize: isMobile ? '16px' : '16px',
           }}
@@ -70,9 +81,9 @@ const ProductCards = props => {
           {props.name}
         </Typography>
         <Typography
-          mb={2}
+          mb={isMobile ? 1 : 2}
           sx={{
-            color: 'brown',
+            color: '#000',
             fontWeight: '700',
             fontSize: isMobile ? '18px' : '25px',
           }}

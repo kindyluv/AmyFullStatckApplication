@@ -6,8 +6,10 @@ import ThreeGirl from '../../assets/image/ThreeGirl.png'
 import { getAllProducts } from '../../api/Api';
 import { useState, useCallback, useEffect } from "react";
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 const Product = () => {
+    const navigate = useNavigate()
     const theme = useTheme()
     const isMobile = useMediaQuery(theme.breakpoints.down('md'))
 
@@ -39,7 +41,7 @@ const Product = () => {
                 <Grid container rowSpacing={!isMobile ? 5 : isMobile ? 3 : 0} columnSpacing={!isMobile ? 5 : isMobile ? 12 : 0}>
                     {data.map((value, index) => (
                         <Grid item lg={3} sm={6} xs={12} xl={3} md={6} key={index}>
-                            <ProductCards image={Content[index].Image} name={value.name} price={value.price} />
+                            <ProductCards productId={value.id} image={Content[index].Image} name={value.name} price={value.price} />
                         </Grid>
                     ))}
                 </Grid>
@@ -53,7 +55,7 @@ const Product = () => {
                         <Typography sx={{ p: '0px 2px' , mb: '10px', fontSize: !isMobile ? '30px' : '14px', color: !isMobile ? 'rgb(228, 132, 76) !important' : '#cd6444 !important', fontWeight: '700' }}>
                             To see more Products for different skin tones
                         </Typography>
-                        <Button sx={{ borderRadius: '16px', color: 'white', backgroundColor: !isMobile ? 'rgb(228, 132, 76) !important' : '#cd6444 !important', fontSize: !isMobile ? '16px' : '12px', p: !isMobile ? '0px 20px' : '', fontWeight: '700' }}>Click Here</Button>
+                        <Button sx={{ borderRadius: '16px', color: 'white', backgroundColor: !isMobile ? 'rgb(228, 132, 76) !important' : '#cd6444 !important', fontSize: !isMobile ? '16px' : '12px', p: !isMobile ? '0px 20px' : '', fontWeight: '700' }} onClick={()=> navigate('/product')}>Click Here</Button>
                     </Grid>
                 </Grid>
             </Grid>

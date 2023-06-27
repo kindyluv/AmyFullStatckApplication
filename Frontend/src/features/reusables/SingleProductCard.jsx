@@ -38,8 +38,8 @@ const SingleProductCard = () => {
   return (
     <Box
       sx={{
-        backgroundColor: '#ebe5e5 !important',
-        p: '20px',
+        backgroundColor: !isMobile ? '#ebe5e5 !important' : '',
+        p: isMobile ? '10px 5px' : '20px',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -54,44 +54,44 @@ const SingleProductCard = () => {
           alignItems: 'center',
           flexDirection: 'row',
           backgroundColor: '#fff',
-          width: '95%',
+          width: isMobile ? '97%' : '95%',
         }}
+        columnSpacing={isMobile ? 5 : 0}
       >
         <Grid
           item
           lg={6}
           xl={6}
           sm={6}
-          xs={6}
+          xs={12}
           md={6}
           sx={{
-            p: !isMobile ? '10px 20px' : '10px 20px',
+            p: isMobile ? '0px 5px' : '10px 20px',
             display: 'flex',
-            justifyContent: 'flex-start',
-            alignItems: 'flex-start',
+            justifyContent:  isMobile ? 'center' : 'flex-start',
+            alignItems: isMobile ? 'center' : 'flex-start',
             flexDirection: 'row',
           }}
         >
-          <img src={image} alt="image" />
+          <img src={image} alt="image" style={{ width: isMobile ? '200px' : ''}} />
         </Grid>
         <Grid
           item
           lg={3}
           xl={3}
-          sm={3}
-          xs={3}
-          md={3}
-          sx={{
-          }}
+          sm={6}
+          xs={12}
+          md={6}
+          sx={{ mb: isMobile ? 2 : 0 }}
         >
           <Grid container rowSpacing={!isMobile ? 6 : 4}>
             <Grid item lg={12} xs={12} sm={12} md={12} xl={12}>
               <Typography
                 mb={2}
                 sx={{
-                  color: '#b52458',
+                  color: '#a1385c',
                   fontWeight: '700',
-                  fontSize: isMobile ? '16px' : '22px',
+                  fontSize: isMobile ? '18px' : '22px',
                 }}
               >
                 {name}
@@ -108,7 +108,7 @@ const SingleProductCard = () => {
               <Box
                 sx={{
                   display: 'flex',
-                  width: '60%',
+                  width: isMobile ? '190px' : '60%',
                   justifyContent: 'space-between',
                   alignItems: 'flex-start',
                 }}
@@ -142,16 +142,16 @@ const SingleProductCard = () => {
                   item
                   lg={3}
                   xl={3}
-                  sm={5}
-                  xs={5}
+                  sm={3}
+                  xs={3}
                   md={5}
                   sx={{
                     color: 'grey',
                     fontWeight: '700',
                     fontSize: isMobile ? '16px' : '16px',
                     display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
+                    justifyContent: isMobile ? 'flex-start' : 'center',
+                    alignItems: isMobile ? 'flex-start' : 'center',
                     flexDirection: 'column',
                   }}
                 >

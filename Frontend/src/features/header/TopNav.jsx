@@ -8,7 +8,8 @@ import SearchMd from '../../assets/image/SearchMd.svg';
 import { getAllCartItemsUrl } from '../../api/Api'
 import axios from 'axios';
 
-const fetchCartItems = async (setItems) => {
+// eslint-disable-next-line react-refresh/only-export-components
+export const fetchCartItems = async (setItems) => {
   try {
     const response = await axios.get(getAllCartItemsUrl);
     if (response.status === 200) {
@@ -21,7 +22,13 @@ const fetchCartItems = async (setItems) => {
   }
 };
 
-const handleQuantity = (items, setQuantity) => {
+// eslint-disable-next-line react-refresh/only-export-components
+export const cartItems = async (value) => {
+  return value.length
+}
+
+// eslint-disable-next-line react-refresh/only-export-components
+export const handleQuantity = (items, setQuantity) => {
   let totalQuantity = 0;
   items.forEach((item) => {
     totalQuantity += item.quantity;
@@ -44,7 +51,8 @@ const TopNav = () => {
 
   useEffect(() => {
     fetchCartItems(setItems);
-  }, []);
+    cartItems(items)
+  }, [items]);
 
   useEffect(() => {
     handleQuantity(items, setQuantity);
@@ -85,13 +93,13 @@ const TopNav = () => {
         <Grid container sx={{ backgroundColor: 'transparent', justifyContent: 'center', alignItems: 'center', padding: '10px 20px' }}>
           <Grid item lg={12} xl={12} xs={12} sm={12} md={12}>
             <Grid container spacing={0.5}>
-              <Grid item sm={6} md={6} xs={6} sx={{ fontSize: '20px', fontWeight: '700', color: '#cd6444', textAlign: 'start' }}>Amy Doll</Grid>
-              <Grid item sm={5} md={5} xs={5} sx={{ textAlignLast: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#cd6444' }}>
-                <Typography sx={{ color: '#cd6444 !important', fontSize: '18px', fontWeight: '900' }}>Book Session</Typography>
+              <Grid item sm={6} md={6} xs={4} sx={{ fontSize: '18px', fontWeight: '700', color: '#cd6444', textAlign: 'start' }}>Amy Doll</Grid>
+              <Grid item sm={5} md={5} xs={6} sx={{ textAlignLast: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center', color: '#cd6444' }}>
+                <Typography sx={{ color: '#cd6444 !important', fontSize: '16px', fontWeight: '900' }}>Book Session</Typography>
               </Grid>
-              <Grid item sm={1} md={1} xs={1} sx={{ textAlignLast: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <Grid item sm={1} md={1} xs={2} sx={{ textAlignLast: 'center', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <img src={CartMd} alt='CartIcon' />
-                <span style={{ color: '#cd6444', fontSize: '20px', fontWeight: '700', backgroundColor: 'transparent', marginTop: '-15px', borderRadius: '50%' }}>{quantity}</span>
+                <span style={{ color: '#cd6444', fontSize: '16px', fontWeight: '700', backgroundColor: 'transparent', marginTop: '-15px', borderRadius: '50%' }}>{quantity}</span>
               </Grid>
             </Grid>
           </Grid>

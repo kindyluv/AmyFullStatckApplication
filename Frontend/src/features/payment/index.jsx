@@ -13,19 +13,24 @@ const Payment = () => {
     const location = useLocation();
     const { amount } = location.state;
 
-    const handlePayment = useCallback(async () => {  
+    const handlePayment = useCallback(async () => {
       try {
         const response = await axios.post(initiatePaymentUrl, { email, amount });
         setData(response.data.response);
         const { authorization_url, reference } = response.data.response;
-        await handlePaymentVerify(reference);
-
-      window.open(authorization_url, '_blank');
-
+    
+        const newWindow = window.open(authorization_url, '_blank');
+    
+        const intervalId = setInterval(async () => {
+          if (newWindow.closed) {
+            clearInterval(intervalId);
+            await handlePaymentVerify(reference);
+          }
+        }, 1000);
       } catch (error) {
         console.error('Failed to initialize payment:', error);
       }
-    },[email, amount]);
+    }, [email, amount]);
 
     useEffect(() => {
       handlePayment();
@@ -39,7 +44,11 @@ const Payment = () => {
       try {
         const url = getPaymentVerificationUrl(reference)
         const response = await axios.get(url);
-        console.log('Payment verification response:', response.data);
+        if(response.status === 200){
+          console.log('Payment verification successful !!!');
+        }else{
+          console.log('Payment failed')
+        }
       } catch (error) {
         console.log('An error occurred while verifying payment:', error);
       }
