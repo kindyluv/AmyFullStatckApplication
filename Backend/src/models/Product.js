@@ -13,20 +13,29 @@ const productSchema = new Schema({
         type: Number,
         required: true,
     },
-    description:{
+    description: {
         type: String,
-        required: true
+        // required: true
     },
     image: {
         type: Buffer
     }
-})
+}, {
+    toJSON: { virtuals: true }
+});
 
 productSchema.pre('save', function (next) {
     if (!this._id) {
-      this._id = new mongoose.Types.ObjectId().toString();
+        this._id = new mongoose.Types.ObjectId().toString();
     }
     return next();
+});
+
+productSchema.virtual('imageURL').get(function () {
+    if (this.image && this.image.length > 0) {
+        return `data:image/png;base64,${this.image.toString('base64')}`;
+    }
+    return null;
 });
 
 const Product = mongoose.model('Product', productSchema);

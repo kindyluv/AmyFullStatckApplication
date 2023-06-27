@@ -4,13 +4,15 @@ const fs = require('fs');
 const saveProduct = async (request, imageRequest) => {
     try{
         const { name, price } = request;
-        const { image } = imageRequest.file.path;
+        // const { image } = imageRequest.file;
+        const imageBuffer = fs.readFileSync(imageRequest.file.path);
 
-        let product = new Product({ name, price, image: image });
+        let product = new Product({ name, price, image: imageBuffer });
 
         let savedProduct = await product.save();
 
         let response = {
+            id: savedProduct._id,
             name: savedProduct.name,
             price: savedProduct.price,
             description: savedProduct.description,
@@ -33,10 +35,22 @@ const getAllProducts = async () => {
     try {
         const products = await Product.find();
 
-        return{
+        const response = products.map(product => {
+            return {
+                id: product._id,
+                name: product.name,
+                price: product.price,
+                description: product.description,
+                image: product.image,
+            };
+        });
+
+        return {
             message: 'Products Retrieved Successfully',
-            data: products
-        }
+            data: response,
+            length: products.length
+        };
+
     } catch (error) {
         return{
             message: `Failed to retrieve products ${error}`,
@@ -89,6 +103,11 @@ const deleteProductById = async (productId) => {
     try {
       const deletedProduct = await Product.findByIdAndDelete(productId);
       if (!deletedProduct) throw new NotFoundException(`Product with id ${productId} not found`)
+
+      return {
+        message: 'Product deleted successfully',
+        data: deletedProduct,
+      };
 
     } catch (error) {
         return{

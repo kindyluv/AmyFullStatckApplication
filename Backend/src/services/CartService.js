@@ -9,7 +9,9 @@ const addToCart = async (request) => {
     const product = await ProductService.getProductById (productId);
 
     if (!cart) {
-      const newCart = new Cart ({items: [{productId, quantity: 1}]});
+      const newCart = new Cart ({
+        items: [{productId, quantity: 1}]
+      });
       const savedCart = await newCart.save ();
       return {
         message: 'Item added to cart successfully',
@@ -40,6 +42,56 @@ const addToCart = async (request) => {
     };
   }
 };
+
+const getAllItemsInCart = async () => {
+  try {
+    const cart = await Cart.findOne();
+    if (!cart) {
+      throw new NotFoundException('Cart not found');
+    }
+    
+    const items = cart.items.map(item => {
+      return {
+        productId: item.productId._id,
+        name: item.productId.name,
+        price: item.productId.price,
+        quantity: item.quantity
+      };
+    });
+
+    return {
+      message: 'Items in cart retrieved successfully',
+      data: items,
+    };
+  } catch (error) {
+    return {
+      message: `Failed to retrieve items in cart: ${error}`,
+      data: 'Try Again',
+    };
+  }
+};
+
+  
+  // ProductService.js
+  
+  const getProductsByIds = async (productIds) => {
+    try {
+      const products = await Product.find({ _id: { $in: productIds } });
+  
+      const response = {
+        message: 'Products Retrieved Successfully',
+        data: products,
+        length: products.length,
+      };
+  
+      return response;
+    } catch (error) {
+      return {
+        message: `Failed to retrieve products: ${error}`,
+        data: 'Try Again',
+      };
+    }
+  };
 
 const updateCartItem = async (itemId, quantity) => {
   try {
@@ -85,4 +137,4 @@ const removeCartItem = async (itemId) => {
   }
 };
 
-module.exports = {addToCart, updateCartItem, removeCartItem};
+module.exports = {addToCart, updateCartItem, removeCartItem, getAllItemsInCart};

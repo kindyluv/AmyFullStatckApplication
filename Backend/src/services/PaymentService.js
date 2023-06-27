@@ -18,7 +18,7 @@ const intializePayment = async (request) =>{
         metadata: {
         paymentRefUUID: paymentRef
         },
-        reference: paymentRef
+        // reference: paymentRef
     });
     const headers = {
         Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
@@ -44,7 +44,7 @@ const verifyPayment = async (request) => {
     const { reference } = request;
     
     const url = `${process.env.PAYMENT_VERIFICATION_URL}${reference}`;
-    console.log('Hi I got here url --> ', url)
+    console.log('Hi I got here url --> ', reference)
     const headers = {
         Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
     };

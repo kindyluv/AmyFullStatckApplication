@@ -5,6 +5,7 @@ const ProductController = require('../controller/ProductController');
 const CartController = require('../controller/CartController');
 const multerInstance = require("../../multer");
 const PaymentController = require("../controller/PaymentController")
+const SessionController = require('../controller/SessionController')
 
 // Authentication
 router.post('/auth/login', AuthController.login)
@@ -27,9 +28,16 @@ router.delete('/product/:id', ProductController.deleteProductById)
 router.post('/cart/addItem', CartController.addToCart);
 router.put('/cart/:itemId', CartController.updateCartItem);
 router.delete('/cart/:itemId', CartController.removeCartItem);
+router.get('/cart', CartController.getAllItemsInCart);
 
 // Payment
 router.post('/payment/initialize-payment', PaymentController.intializePayment)
 router.get('/payment/verify-payment/:reference', PaymentController.verifyPayment)
+
+// Session
+router.get('/session/all', SessionController.getAllSession);
+router.get('/session/:id', SessionController.getSessionById);
+router.post('/session', SessionController.createSession);
+router.delete('/session/:id', SessionController.deleteSession);
 
 module.exports = router;
