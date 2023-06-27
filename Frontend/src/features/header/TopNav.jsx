@@ -65,7 +65,9 @@ const TopNav = () => {
     <>
       {!isMobile && (
         <Grid container sx={{ backgroundColor: '#e79595', justifyContent: 'center', alignItems: 'center', padding: '10px 0px' }}>
-          <Grid item lg={3} xl={3} sx={{ fontSize: '25px', fontWeight: '700', color: 'black', textAlign: 'center' }}>Amy Doll</Grid>
+          <Grid item lg={3} xl={3} sx={{ fontSize: '25px', fontWeight: '700', color: 'black', textAlign: 'center' }}>
+            <a href='/' style={{ textDecoration: 'none', color: '#000' }}>Amy Doll</a>
+          </Grid>
           <Grid item lg={6} xl={6} sx={{ backgroundColor: 'white', borderRadius: '8px' }}>
             <Grid container>
               <Grid item lg={10} xl={10} sx={{ display: 'flex', alignItems: 'center' }}>

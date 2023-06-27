@@ -4,6 +4,7 @@
   "description": "Amy Doll E-commerce application",
   "main": "index.js",
   "scripts": {
+    "build": "concurrently \"cd Frontend && npm run build\" \"cd Backend && npm run build\"",
     "start": "node start.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
