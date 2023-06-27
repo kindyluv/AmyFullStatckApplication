@@ -1,0 +1,20 @@
+{
+  "name": "amyfullstatckapplication",
+  "version": "1.0.0",
+  "description": "Amy Doll E-commerce application",
+  "main": "index.js",
+  "scripts": {
+    "start": "node start.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kindyluv/AmyFullStatckApplication.git"
+  },
+  "author": "Amy Doll",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kindyluv/AmyFullStatckApplication/issues"
+  },
+  "homepage": "https://github.com/kindyluv/AmyFullStatckApplication#readme"
+}
