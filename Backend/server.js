@@ -25,8 +25,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use('/api/amy-doll', Router);
-// app.use(cors());
+app.use(cors());
+const PORT = process.env.PORT || 8000
 
-app.listen(8000, () => {
+app.listen(PORT, () => {
   console.log('Server is running on port 8000 !!!');
 });
