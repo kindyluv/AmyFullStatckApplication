@@ -1,7 +1,7 @@
 const PaymentService = require('../services/PaymentService')
 
-const intializePayment = (req, res) => {
-    PaymentService.intializePayment(req.body)
+const initializePayment = async (req, res) => {
+    await PaymentService.initializePayment(req.body)
     .then((response) => {
         res.json({
           response
@@ -14,8 +14,8 @@ const intializePayment = (req, res) => {
       });
 }
 
-const verifyPayment = (req, res) => {
-    PaymentService.verifyPayment(req.params)
+const verifyPayment = async (req, res) => {
+    await PaymentService.verifyPayment(req.params)
     .then((response) => {
         res.json({
           response
@@ -28,4 +28,4 @@ const verifyPayment = (req, res) => {
       });
 }
 
-module.exports = { intializePayment, verifyPayment }
+module.exports = { initializePayment, verifyPayment }

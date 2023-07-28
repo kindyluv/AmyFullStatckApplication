@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcryptjs');
-const Address = require('./Address');
 
 const adminUserSchema = new Schema(
   {
@@ -32,10 +31,6 @@ const adminUserSchema = new Schema(
     },
     gender: {
       type: String
-    },
-    address: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Address'
     }
   },
   { timestamps: true }

@@ -1,7 +1,7 @@
 {
-  "name": "amyfullstatckapplication",
+  "name": "p_l_fullstatck_e_c_application",
   "version": "1.0.0",
-  "description": "Amy Doll E-commerce application",
+  "description": "Prcious Lois E-commerce is a full stack application built with node js for the server side and react js for the client side",
   "main": "index.js",
   "scripts": {
     "build": "concurrently \"cd Frontend && npm run build\" \"cd Backend && npm run build\"",

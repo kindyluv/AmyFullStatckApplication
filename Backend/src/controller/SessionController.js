@@ -4,7 +4,8 @@ const createSession = (req, res) => {
     SessionService.create(req.body)
       .then((response) => {
         res.json({
-          response
+          message: 'Session created successfully',
+          data: response,
         });
       })
       .catch((error) => {

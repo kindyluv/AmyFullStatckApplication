@@ -1,7 +1,6 @@
 const AdminService = require('../services/AdminService');
 
 const createAdmin = (req, res) => {
-  console.log('request --> ', req.body);
   AdminService.createNewAdmin(req.body)
     .then((response) => {
       res.json({

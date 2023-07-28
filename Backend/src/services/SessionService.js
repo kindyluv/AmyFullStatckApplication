@@ -30,14 +30,14 @@ const getSessionById = async (request) => {
 };
 
 const create = async (request) => {
-  const { clientName, appointmentDate, phoneNumber, appointmentTime, category } = request.body;
+  const { clientName, appointmentDate, phoneNumber, appointmentTime, category } = request;
   try {
     const session = new Session({
-      clientName,
-      appointmentDate,
-      phoneNumber,
-      appointmentTime,
-      category
+      clientName: clientName,
+      appointmentDate: appointmentDate,
+      phoneNumber: phoneNumber,
+      appointmentTime: appointmentTime,
+      category: category,
     });
     const savedSession = await session.save();
     return{

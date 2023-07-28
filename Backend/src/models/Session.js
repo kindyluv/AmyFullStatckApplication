@@ -7,18 +7,16 @@ const sessionSchema = new Schema({
     },
     clientName: {
         type: String,
-        required: true,
+        // required: true,
     },
     appointmentDate: {
-        type: Date,
-        required: true,
+        type: String,
     },
     phoneNumber: {
         type: String
     },
     appointmentTime: {
-        type: Date,
-        required: true,
+        type: String,
     },
     category: {
         type: String

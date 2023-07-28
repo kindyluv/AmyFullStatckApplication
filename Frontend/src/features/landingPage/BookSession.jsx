@@ -1,36 +1,42 @@
 import {useTheme, useMediaQuery, Grid, Button} from '@mui/material';
-import {createSessionUrl} from '../../api/Api';
+import { createSessionUrl } from '../../api/Api';
 import {useState} from 'react';
 import axios from 'axios';
 
 const BookSession = () => {
   const theme = useTheme ();
   const isMobile = useMediaQuery (theme.breakpoints.down ('md'));
-  let initialValue = {
+  
+  const [data, setData] = useState({
     clientName: '',
     phoneNumber: '',
-    date: '',
-    time: '',
+    appointmentDate: '',
+    appointmentTime: '',
     category: '',
-  };
-  const [data, setData] = useState (initialValue);
+  });
 
   const handleChange = (e) => {
-    setData(prevData => ({
+    setData((prevData) => ({
       ...prevData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     }));
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault ();
+    e.preventDefault();
+    const formattedData = {
+      ...data,
+    appointmentDate: data.appointmentDate.toString(),
+    appointmentTime: data.appointmentTime.toString(),
+    };
+    // console.log('formattedData:', formattedData);
     axios
-      .post (createSessionUrl, data)
-      .then (response => {
-        console.log (response); 
+      .post(createSessionUrl, formattedData)
+      .then(response => {
+        console.error(response);
       })
-      .catch (error => {
-        console.error (error);
+      .catch(error => {
+        console.error(error);
       });
   };
 
@@ -49,7 +55,7 @@ const BookSession = () => {
           p: '10px 0',
           fontWeight: '700',
           color: !isMobile ? 'black' : 'white',
-          backgroundColor: !isMobile ? '#e79595' : '#cd6444 !important',
+          backgroundColor: '#e79595',
           fontSize: !isMobile ? '40px' : isMobile ? '30px' : '35px',
         }}
       >
@@ -131,10 +137,10 @@ const BookSession = () => {
                   fontWeight: '550',
                 }}
                 type="date"
-                name="date"
-                id="date"
-                placeholder="Date"
-                value={data.date}
+                name="appointmentDate"
+                id="appointmentDate"
+                placeholder="Appointment Date"
+                value={data.appointmentDate}
                 onChange={handleChange}
               />
             </Grid>
@@ -152,10 +158,10 @@ const BookSession = () => {
                   fontWeight: '550',
                 }}
                 type="time"
-                name="time"
-                id="time"
-                placeholder="Time"
-                value={data.time}
+                name="appointmentTime"
+                id="appointmentTime"
+                placeholder="Appointment Time"
+                value={data.appointmentTime}
                 onChange={handleChange}
               />
             </Grid>
@@ -190,7 +196,7 @@ const BookSession = () => {
                   height: '50px',
                   width: !isMobile ? '90%' : '100%',
                   color: 'black',
-                  backgroundColor: !isMobile ? 'rgb(228, 132, 76)' : '#cd6444',
+                  backgroundColor: '#e79595',
                   borderRadius: '8px',
                   border: 'none',
                   padding: '5px 15px',

@@ -2,7 +2,6 @@ const ProductService = require('../services/ProductService');
 
 
 const createProduct = (req, res) => {
-  console.log('request --> ', req.body)
     ProductService.saveProduct(req.body, req)
     .then((response) => {
       res.json({
@@ -45,7 +44,7 @@ const getProductById = (req, res) => {
 }
 
 const updatedProduct = (req, res) => {
-    ProductService.updateProductById(req)
+    ProductService.updateProductById(req.body, req)
     .then((response) => {
         res.json({
           response

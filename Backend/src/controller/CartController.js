@@ -1,5 +1,19 @@
 const CartService = require ('../services/CartService');
 
+const createCart = (req, res) => {
+  CartService.createCart(req.params)
+  .then(response => {
+    res.json({
+      response
+    })
+  })
+  .catch(error => {
+    res.json ({
+      message: error,
+    });
+  })
+}
+
 const addToCart = (req, res) => {
   CartService.addToCart (req.body)
     .then (response => {
@@ -15,7 +29,7 @@ const addToCart = (req, res) => {
 };
 
 const getAllItemsInCart = (req, res) => {
-  CartService.getAllItemsInCart ()
+  CartService.getAllItemsInCart(req.params)
     .then (response => {
       res.json ({
         response,
@@ -43,7 +57,7 @@ const updateCartItem = (req, res) => {
 };
 
 const removeCartItem = (req, res) => {
-  CartService.removeCartItem (req.params.itemId)
+  CartService.removeCartItem (req.params)
     .then (response => {
       res.json ({
         response,
@@ -56,4 +70,28 @@ const removeCartItem = (req, res) => {
     });
 };
 
-module.exports = {addToCart, updateCartItem, removeCartItem, getAllItemsInCart};
+const getCartBySessionId = async(req, res) =>{
+  await CartService.getCartBySessionId(req.params.sessionId)
+  .then((response) => {
+    res.json(response)
+  })
+  .catch((error) => {
+    res.json(error)
+  })
+}
+
+const removeAllItemsFromCart = async(req, res) => {
+  await CartService.removeAllItemsFromCart(req.params)
+    .then (response => {
+      res.json ({
+        response,
+      });
+    })
+    .catch (error => {
+      res.json ({
+        message: error,
+      });
+    });
+};
+
+module.exports = { createCart, addToCart, updateCartItem, removeCartItem, getAllItemsInCart, getCartBySessionId, removeAllItemsFromCart };

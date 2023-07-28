@@ -7,7 +7,7 @@ const generatePaymentRefUUID = async () => {
       return String(paymentReference).toUpperCase();
 }
 
-const intializePayment = async (request) =>{
+const initializePayment = async (request) =>{
     const paymentRef = await generatePaymentRefUUID();
     const { email, amount } = request;
     const url = process.env.INITIALIZE_PAYMENT_URL;
@@ -18,21 +18,17 @@ const intializePayment = async (request) =>{
         metadata: {
         paymentRefUUID: paymentRef
         },
-        // reference: paymentRef
     });
     const headers = {
         Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
         'Content-Type': 'application/json',
     };
-
     try {
         const response = await axios.post(url, value, { headers });
         const data = response.data;
         if (!data.status || !data.data.authorization_url) {
-            console.log('Hi I got here 4 data --> Failed to initiate transaction')
         throw new Error('Failed to initiate transaction');
         }
-        console.log('data --> ', data.data)
         return data.data;
     } catch (error) {
         Logger.error(error);
@@ -42,21 +38,19 @@ const intializePayment = async (request) =>{
 
 const verifyPayment = async (request) => {
     const { reference } = request;
-    
     const url = `${process.env.PAYMENT_VERIFICATION_URL}${reference}`;
-    console.log('Hi I got here url --> ', reference)
     const headers = {
         Authorization: `Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
     };
     try {
         const response = await axios.get(url, { headers });
         const paymentResponse = response.data.data;
-        console.log('Hi I got here data --> ', paymentResponse)
-
-        if (paymentResponse?.paidAt || paymentResponse.paid_at) {
-        return paymentResponse;
+        if (response.data.data.status === 'success') {
+            return {
+              message: 'Successful',
+              data: response.data.data,
+            };
         }
-
         throw new Error('Payment Verification Failed');
     } catch (error) {
         Logger.error(error);
@@ -64,4 +58,4 @@ const verifyPayment = async (request) => {
     }
 }
 
-module.exports =  { intializePayment, verifyPayment }
+module.exports =  { initializePayment, verifyPayment }

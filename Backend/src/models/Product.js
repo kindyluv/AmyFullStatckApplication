@@ -13,12 +13,15 @@ const productSchema = new Schema({
         type: Number,
         required: true,
     },
+    salesPrice: {
+        type: Number,
+        required: true,
+    },
     description: {
         type: String,
-        // required: true
     },
     image: {
-        type: Buffer
+        type: String
     }
 }, {
     toJSON: { virtuals: true }
@@ -33,7 +36,7 @@ productSchema.pre('save', function (next) {
 
 productSchema.virtual('imageURL').get(function () {
     if (this.image && this.image.length > 0) {
-        return `data:image/png;base64,${this.image.toString('base64')}`;
+      return this.image;
     }
     return null;
 });

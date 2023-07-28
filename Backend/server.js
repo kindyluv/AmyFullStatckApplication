@@ -1,33 +1,38 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const multer = require('multer');
 const Router = require('./src/router/Router');
-const bodyParser = require('body-parser');
+const connectDB = require('./src/db/connect');
+const notFound = require('./src/middleware/notfound');
 const app = express();
 const cors = require('cors');
+require('dotenv').config();
+const path = require('path')
 
-const dbUrl = 'mongodb://localhost:27017/AnyDollBackend';
-
-mongoose.set('debug', false);
-mongoose.Promise = global.Promise;
-mongoose.connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true });
-const db = mongoose.connection;
-
-db.on('error', (error) => {
-  console.error(error);
-});
-
-db.on('open', () => {
-  console.log('Database connected successfully!!!...');
-});
-
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-
-app.use('/api/amy-doll', Router);
-app.use(cors());
 const PORT = process.env.PORT || 8000
+// Connect to MongoDB
+connectDB(process.env.LOCAL_MONGO_URI)
+  .then(() => {
+    console.log('Connected to the database');
+    app.listen(PORT, () => {
+      console.log(`Server is listening on port ${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.error('Could not connect to the database', error);
+  });
 
-app.listen(PORT, () => {
-  console.log('Server is running on port 8000 !!!');
+app.use(
+  cors()
+);
+
+app.use(express.json());
+app.use('/api/v1/e-commerce', Router);
+app.use(express.static(path.join(__dirname, 'build')));
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
+app.use('/uploads', express.static('uploads'));
+app.get('/', (req, res) => {
+  res.send('Welcome to Precious Lois E-Commerce API');
+});
+app.use(notFound);

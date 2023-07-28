@@ -1,5 +1,5 @@
 {
-  "name": "any_doll_frontend",
+  "name": "precious_lois_e_commerce_frontend",
   "proxy": "http://localhost:8000",
   "private": true,
   "version": "1.0.0",
@@ -7,15 +7,20 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.14.1",
     "@mui/material": "^5.13.5",
     "axios": "^1.4.0",
     "dotenv": "^16.3.1",
     "http-proxy-middleware": "^2.0.6",
+    "js-cookie": "^3.0.5",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-redux": "^8.1.1",
     "react-router-dom": "^6.13.0",
     "react-scripts": "^5.0.1",
+    "redux": "^4.2.1",
+    "uuid": "^9.0.0",
     "web-vitals": "^3.3.2"
   },
   "scripts": {
